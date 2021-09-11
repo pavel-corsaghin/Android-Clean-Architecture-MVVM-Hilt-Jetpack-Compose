@@ -4,8 +4,8 @@ A sample - boilerplate android news app uses the last technologies and methodolo
 - Clean Architecture with 3 separated layers: data, domain, presentation(ui)
 - Dagger Hilt
 - Retrofit + GsonConverter
-- Corountine
-- ViewModel + LiveData
+- Courountine
+- MVVM + LiveData
 - Jetpack compose
 - Navigation component
 
