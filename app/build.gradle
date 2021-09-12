@@ -46,11 +46,11 @@ android {
         development {
             applicationIdSuffix ".dev"
             versionNameSuffix "-dev"
-            buildConfigField 'String', 'BASE_URL', '"https://newsapi.org/v2/"'
+            buildConfigField 'String', 'BASE_URL', '"https://newsapi.org/"'
         }
 
         production {
-            buildConfigField 'String', 'BASE_URL', '"https://newsapi.org/v2/"'
+            buildConfigField 'String', 'BASE_URL', '"https://newsapi.org/"'
         }
     }
 

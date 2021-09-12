@@ -19,7 +19,7 @@ class DetailViewModel @Inject constructor(
     private val _news = MutableLiveData<News>()
     val news: LiveData<News> = _news
 
-    fun getNewsById(newsId: String) {
+    fun getNewsById(newsId: Int) {
         call({
             useCase.getNewsDetail(newsId)
         }, onSuccess = {

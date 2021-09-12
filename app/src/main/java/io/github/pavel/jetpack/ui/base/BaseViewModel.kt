@@ -59,9 +59,7 @@ open class BaseViewModel : LifecycleObserver, ViewModel() {
 
     protected fun setLoading(isLoading: Boolean) = _loading.postValue(isLoading)
 
-    protected fun setError(errorMessage: String) {
-        _error.postValue(errorMessage)
-    }
+    protected fun setError(errorMessage: String) = _error.postValue(errorMessage)
 
     private fun checkIsUnauthorized(error: Throwable) {
         if (error is RequestException && error.code == HttpURLConnection.HTTP_UNAUTHORIZED) {

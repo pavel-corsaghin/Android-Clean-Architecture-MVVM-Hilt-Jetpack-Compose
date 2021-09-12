@@ -37,7 +37,7 @@ fun SmartView(
                     .fillMaxWidth()
                     .aspectRatio(16f / 9f),
                 painter = rememberImagePainter(
-                    data = news.imageUrl,
+                    data = news.urlToImage,
                     builder = {
                         placeholder(R.drawable.placeholder)
                         error(R.drawable.placeholder)

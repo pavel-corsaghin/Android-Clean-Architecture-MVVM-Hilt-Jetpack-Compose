@@ -20,12 +20,11 @@ import io.github.pavel.jetpack.data.model.response.NewsResponse
 import io.github.pavel.jetpack.domain.model.News
 import io.github.pavel.jetpack.ui.base.AppComposable
 import io.github.pavel.jetpack.ui.composable.WebPageView
-import io.github.pavel.jetpack.ui.list.ListScreen
 import io.github.pavel.jetpack.ui.theme.NewsApplicationTheme
 
 @Composable
 fun DetailScreen(
-    newsId: String,
+    newsId: Int,
     navController: NavController,
     viewModel: DetailViewModel = hiltViewModel()
 ) {
@@ -97,7 +96,7 @@ fun DetailsPreview() {
     NewsApplicationTheme {
         DetailScreen(
             navController = rememberNavController(),
-            news = NewsResponse.mock().news?.firstOrNull(),
+            news = NewsResponse.mock().articles?.firstOrNull(),
             showSmartMode = true,
             toggleMode = {}
         )

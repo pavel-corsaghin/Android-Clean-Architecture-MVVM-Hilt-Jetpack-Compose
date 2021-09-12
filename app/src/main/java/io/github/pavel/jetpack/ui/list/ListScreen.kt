@@ -77,7 +77,7 @@ fun ListScreen(
                                 .fillMaxWidth()
                                 .aspectRatio(16f / 9f),
                             painter = rememberImagePainter(
-                                data = news.imageUrl,
+                                data = news.urlToImage,
                                 builder = {
                                     placeholder(R.drawable.placeholder)
                                     error(R.drawable.placeholder)
@@ -107,7 +107,7 @@ fun ListPreview() {
     NewsApplicationTheme {
         ListScreen(
             navController = rememberNavController(),
-            newsList = NewsResponse.mock().news ?: emptyList()
+            newsList = NewsResponse.mock().articles ?: emptyList()
         )
     }
 }

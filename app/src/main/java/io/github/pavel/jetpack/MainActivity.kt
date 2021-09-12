@@ -6,7 +6,6 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -39,7 +38,7 @@ class MainActivity : ComponentActivity() {
                             ListScreen(navController)
                         }
                         composable("${NavDestinations.DETAIL_SCREEN}/{newsId}") {
-                            it.arguments?.getString("newsId")?.let { newsId ->
+                            it.arguments?.getString("newsId")?.toInt()?.let { newsId ->
                                 DetailScreen(newsId, navController)
                             }
                         }
@@ -56,7 +55,7 @@ fun DefaultPreview() {
     NewsApplicationTheme {
         ListScreen(
             navController = rememberNavController(),
-            newsList = NewsResponse.mock().news ?: emptyList()
+            newsList = NewsResponse.mock().articles ?: emptyList()
         )
     }
 }
