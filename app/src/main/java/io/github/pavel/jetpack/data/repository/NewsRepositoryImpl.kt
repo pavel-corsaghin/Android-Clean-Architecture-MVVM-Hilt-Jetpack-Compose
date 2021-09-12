@@ -10,7 +10,7 @@ class NewsRepositoryImpl @Inject constructor(
     private val newsService: NewsService
 ) : NewsRepository {
 
-    override suspend fun getNewsList(): List<News> {
+    override suspend fun getNewsList(): Result<List<News>> {
 //        val apiResponse = newsService.getNews().body()
 //        if (apiResponse?.status != 200) {
 //            throw Exception("An error occurred when get news")
@@ -19,12 +19,12 @@ class NewsRepositoryImpl @Inject constructor(
 //        return apiResponse.news ?: emptyList()
 
         // Todo: remove mock and use real handler above
-        return NewsResponse.mock().news ?: emptyList()
+        return Result.success(NewsResponse.mock().news ?: emptyList())
     }
 
-    override suspend fun getNewsDetail(id: String): News {
+    override suspend fun getNewsDetail(id: String): Result<News> {
         // Todo: remove mock and use real handler
-        return NewsResponse.mock().news?.find { it -> it.id == id }
-            ?: throw Exception("An error occurred when get new detail")
+        return Result.success(NewsResponse.mock().news?.find { it -> it.id == id }
+            ?: throw Exception("An error occurred when get new detail"))
     }
 }

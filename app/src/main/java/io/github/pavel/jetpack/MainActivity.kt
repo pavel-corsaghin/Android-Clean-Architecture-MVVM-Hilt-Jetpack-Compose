@@ -10,34 +10,53 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import io.github.pavel.jetpack.ui.theme.MyApplicationTheme
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import dagger.hilt.android.AndroidEntryPoint
+import io.github.pavel.jetpack.data.model.response.NewsResponse
+import io.github.pavel.jetpack.ui.detail.DetailScreen
+import io.github.pavel.jetpack.ui.list.ListScreen
+import io.github.pavel.jetpack.ui.theme.NewsApplicationTheme
+import io.github.pavel.jetpack.util.NavDestinations
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            MyApplicationTheme {
-                // A surface container using the 'background' color from the theme
+            NewsApplicationTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    Greeting("Android")
+                    val navController = rememberNavController()
+                    NavHost(
+                        navController = navController,
+                        startDestination = NavDestinations.LIST_SCREEN,
+                    ) {
+                        composable(NavDestinations.LIST_SCREEN) {
+                            ListScreen(navController)
+                        }
+                        composable("${NavDestinations.DETAIL_SCREEN}/{newsId}") {
+                            it.arguments?.getString("newsId")?.let { newsId ->
+                                DetailScreen(newsId, navController)
+                            }
+                        }
+                    }
                 }
             }
         }
     }
 }
 
-@Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
-}
-
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
-    MyApplicationTheme {
-        Greeting("Android")
+    NewsApplicationTheme {
+        ListScreen(
+            navController = rememberNavController(),
+            newsList = NewsResponse.mock().news ?: emptyList()
+        )
     }
 }

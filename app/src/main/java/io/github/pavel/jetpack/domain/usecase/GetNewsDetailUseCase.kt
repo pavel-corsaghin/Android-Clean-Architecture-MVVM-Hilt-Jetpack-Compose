@@ -6,7 +6,7 @@ import javax.inject.Inject
 
 class GetNewsDetailUseCase @Inject constructor(private val newsRepository: NewsRepository) {
 
-    suspend fun getNewsDetail(id: String): News {
+    suspend fun getNewsDetail(id: String): Result<News> {
         return newsRepository.getNewsDetail(id)
     }
 }

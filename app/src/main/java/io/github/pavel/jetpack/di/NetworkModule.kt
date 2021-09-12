@@ -1,10 +1,13 @@
 package io.github.pavel.jetpack.di
 
+import android.content.SharedPreferences
 import io.github.pavel.jetpack.data.service.NewsService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import io.github.pavel.jetpack.BuildConfig
+import io.github.pavel.jetpack.util.Constants.TOKEN_KEY
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -18,7 +21,7 @@ object NetworkModule {
 
     @Provides
     @Named("BaseUrl")
-    fun provideBaseUrl() = "https://example.org/v2/" // Todo: config in build gradle
+    fun provideBaseUrl() = BuildConfig.BASE_URL
 
     @Provides
     fun provideRetrofit(
@@ -33,7 +36,7 @@ object NetworkModule {
     }
 
     @Provides
-    fun provideOkHttpClient(): OkHttpClient {
+    fun provideOkHttpClient(prefs: SharedPreferences): OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor(HttpLoggingInterceptor().apply {
                 level = HttpLoggingInterceptor.Level.BODY
@@ -41,20 +44,25 @@ object NetworkModule {
             .addInterceptor {
                 val original = it.request()
                 val newRequestBuilder = original.newBuilder()
-
                 newRequestBuilder.addHeader("Content-Type", "application/json")
                 newRequestBuilder.addHeader("Accept", "application/json")
-                newRequestBuilder.addHeader("Authorization", "Bearer " + "token") //Todo: Add token
-
+                prefs.getString(TOKEN_KEY, null)?.let { token ->
+                    newRequestBuilder.addHeader("Authorization", "Bearer $token")
+                }
                 it.proceed(newRequestBuilder.build())
             }
             .addInterceptor {
                 val original = it.request()
-                val newRequestBuilder = original.newBuilder()
+                val newUrl = original.url
+                    .newBuilder()
+                    .addQueryParameter("apiKey", BuildConfig.API_KEY)
+                    .build()
+                val newRequest = original
+                    .newBuilder()
+                    .url(newUrl)
+                    .build()
 
-                // Todo: add other interceptor handle like retry, rewrite etc here
-
-                it.proceed(newRequestBuilder.build())
+                it.proceed(newRequest)
             }
             .callTimeout(1, TimeUnit.MINUTES)
             .readTimeout(1, TimeUnit.MINUTES)
